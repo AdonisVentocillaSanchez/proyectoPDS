@@ -1,0 +1,23 @@
+!include ..\Make-win.inc
+
+OBJS=sample.obj ps.obj i25.obj ean.obj msi.obj pcl.obj library.obj code39.obj code93.obj main.obj cmdline.obj code128.obj codabar.obj plessey.obj
+EXES=sample.exe
+
+all: libbarcode.lib $(EXES)
+
+libbarcode.lib: $(OBJS)
+	$(LIBRARIAN) $< +-ps.obj +-i25.obj +-ean.obj +-msi.obj +-pcl.obj +-library.obj +-code39.obj +-code93.obj +-main.obj +-cmdline.obj +-code128.obj +-codabar.obj +-plessey.obj
+	-del libbarcode.bak
+
+sample.exe: libbarcode.lib
+
+.c.obj:
+	$(CC) $(CCFLAGS) -L..\libpaper -I..\libpaper -Icompat -c {$? } libpaper.lib
+	
+.obj.exe:
+	$(CC) $(CCFLAGS) $< libbarcode.lib
+
+clean:
+	-del $(OBJS) $(BINS)
+	-del $(EXES) $(EXES:.exe=.obj) $(EXES:.exe=.tds)
+	-del libbarcode.lib libbarcode.bak

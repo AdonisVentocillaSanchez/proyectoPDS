@@ -1,0 +1,16 @@
+!include ..\Make-win.inc
+
+OBJS=dimen.obj paper.obj
+
+all: libpaper.lib
+
+libpaper.lib: $(OBJS)
+    $(LIBRARIAN) $< +-dimen.obj +-paper.obj
+	
+
+.c.obj:
+	$(CC) $(CCFLAGS) -c {$? }
+
+clean:
+	-del $(OBJS)
+	-del libpaper.lib libpaper.bak

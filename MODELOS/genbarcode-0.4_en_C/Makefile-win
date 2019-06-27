@@ -1,0 +1,30 @@
+!include Make-win.inc
+
+EXES=genbarcode.exe
+
+all: $(EXES)
+
+genbarcode.exe: subdirs
+
+subdirs:
+	cd libpaper
+	$(MAKE) -f Makefile-win
+	cd ..
+	cd gnu-barcode-0.98
+	$(MAKE) -f Makefile-win
+	cd ..
+
+.c.obj:
+	$(CC) $(CCFLAGS) -Ignu-barcode-0.98 -Lgnu-barcode-0.98 -c {$? }
+
+.obj.exe:
+	$(CC) $(CCFLAGS) -Lgnu-barcode-0.98 {$? } libbarcode.lib
+
+	
+clean:
+	-del $(EXES) $(EXES:.exe=.obj) $(EXES:.exe=.tds)
+	cd gnu-barcode-0.98
+	$(MAKE) -f Makefile-win clean
+	cd ..\libpaper
+	$(MAKE) -f Makefile-win clean
+	cd ..

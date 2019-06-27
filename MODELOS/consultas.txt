@@ -1,0 +1,25 @@
+//colocar postulantes incalificados
+UPDATE puntaje SET puntajePostulante=-100
+
+//orden de merito
+
+SELECT P.idPostulante,P.nombrePostulante,P.apellidoPaternoPostulante,P.apellidomaternoPostulante,P.dniPostulante,
+       C.nombreCarrera,C.vacantesCarrera,T.nombreTurno,PU.puntajePostulante
+FROM 	postulante P, puntaje PU, carrera C, turno T
+WHERE 	P.idPostulante = PU.idPostulante AND
+	P.idCarrera = C.idCarrera AND
+	C.idTurno = T.idTurno AND
+	P.idCarrera =3
+ORDER BY PU.puntajePostulante DESC
+
+//privilegios de usuario
+SELECT PR.idPrivilegio, PR.labelPrivilegio,PR.categoriaPrivilegio
+FROM usuario U, privilegios PR, detallePrivilegio DT
+WHERE  U.login = DT.login AND
+       PR.idPrivilegio = DT.idPrivilegio AND
+       U.login = 'irubenv'	
+
+
+
+
+
